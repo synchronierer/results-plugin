@@ -15,11 +15,11 @@ repositories {
 }
 
 dependencies {
-    compileOnly("igs-landstuhl:student-database:v2.0.0-SNAPSHOT-1") // TODO: Use an api only implementation here
+    compileOnly(files("/home/lo/learn-monitor-arcanum-neu/runtime-original/sandbox/student-database.jar")) // TODO: Use an api only implementation here
     compileOnly("org.slf4j:slf4j-api:2.0.13")
     
     // Only for local debugging:
-    runtimeOnly("igs-landstuhl:student-database:v2.0.0-SNAPSHOT-1")
+    runtimeOnly(files("/home/lo/learn-monitor-arcanum-neu/runtime-original/sandbox/student-database.jar"))
     
     // test framework (optional)
     testImplementation("org.junit.jupiter:junit-jupiter:5.13.4")

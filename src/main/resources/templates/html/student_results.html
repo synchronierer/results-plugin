@@ -1,23 +1,143 @@
 <!DOCTYPE html>
 <html lang="de">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Ergebnisse – Lernsystem</title>
-        <link rel="stylesheet" href="style.css" />
-        <link rel="stylesheet" href="results.css" />
-        <script src="student-database.js"></script>
-    </head>
-    <body>
-        <section id="results">
-            <header>
-                <h1>Ergebnisse für <span id="student-name"></span></h1>
-            </header>
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+    <title>Schatzkammer – Arcanum</title>
+
+    <link rel="stylesheet" href="/arcanum-student.css">
+    <link rel="stylesheet" href="/arcanum-student-theme.css">
+    <link rel="stylesheet" href="/results.css">
+
+    <script src="/student-database.js" defer></script>
+    <script src="/build_results.js" defer></script>
+</head>
+
+<body class="arcanum-page">
+    <div class="arcanum-app">
+        <header class="arcanum-hero arcanum-treasury-hero">
+            <div
+                class="arcanum-hero__landscape"
+                aria-hidden="true"
+            ></div>
+
+            <div class="arcanum-profile">
+                <div
+                    class="arcanum-avatar"
+                    id="student-avatar"
+                    aria-label="Profilbild"
+                >
+                    <span id="student-initials">?</span>
+                </div>
+
+                <div class="arcanum-profile__identity">
+                    <div class="arcanum-profile__identity-main">
+                        <p class="arcanum-eyebrow">
+                            Basiscamp Arcanum · Schatzkammer
+                        </p>
+
+                        <h1 id="student-name">
+                            Schülerprofil wird geladen …
+                        </h1>
+
+                        <div class="arcanum-profile__details">
+                            <span>
+                                Klasse
+                                <strong id="student-class">–</strong>
+                            </span>
+
+                            <span>
+                                Graduierung
+                                <strong id="student-graduation">
+                                    Starter
+                                </strong>
+                            </span>
+
+                            <div class="arcanum-profile__email">
+                                <span>E-Mail</span>
+                                <strong id="student-email">
+                                    wird geladen
+                                </strong>
+                            </div>
+                        </div>
+
+                        <a
+                            class="arcanum-button arcanum-button--secondary"
+                            href="/dashboard"
+                        >
+                            Zurück zum Dashboard
+                        </a>
+
+                        <a
+                            class="arcanum-button arcanum-button--secondary arcanum-logout-button"
+                            href="/arcanum-logout.html"
+                        >
+                            Abmelden
+                        </a>
+                    </div>
+
+                    <div class="arcanum-profile__metrics">
+                        <div
+                            class="arcanum-profile__metric-card
+                                   arcanum-profile__metric-card--coins"
+                        >
+                            <span class="arcanum-profile__metric-label">
+                                Gesamtmünzen
+                            </span>
+
+                            <strong
+                                class="arcanum-profile__metric-value"
+                                id="total-coins"
+                            >
+                                0
+                            </strong>
+                        </div>
+
+                        <div
+                            class="arcanum-profile__metric-card
+                                   arcanum-profile__metric-card--rank"
+                        >
+                            <span class="arcanum-profile__metric-label">
+                                Platz
+                            </span>
+
+                            <strong
+                                class="arcanum-profile__metric-value"
+                                id="student-rank"
+                            >
+                                noch offen
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="arcanum-logo-placeholder"
+                    aria-label="Arcanum"
+                >
+                    <span>A</span>
+                </div>
+            </div>
+        </header>
+
+        <main
+            class="arcanum-main arcanum-treasury-main"
+            id="results"
+        >
+            <section class="arcanum-treasury-heading">
+                <p class="arcanum-eyebrow">Schatzkammer</p>
+                <h2>Deine gesammelten Münzen und Erfolge</h2>
+            </section>
+
             <section id="charts"></section>
-            <script src="build_results.js"></script>
+
             <nav>
                 %{nav}
             </nav>
-        </section>
-    </body>
+        </main>
+    </div>
+</body>
 </html>
