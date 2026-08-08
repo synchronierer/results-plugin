@@ -4,6 +4,10 @@ set -Eeuo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
+# Keep Gradle writable inside the repository-scoped Codex sandbox unless
+# the caller explicitly supplies another Gradle user home.
+export GRADLE_USER_HOME="${GRADLE_USER_HOME:-$ROOT/.gradle/codex-user-home}"
+
 BACKEND_JAR="${STUDENT_DATABASE_JAR:-}"
 DEFAULT_BACKEND_JAR="$HOME/learn-monitor-arcanum-neu/runtime-original/sandbox/student-database.jar"
 

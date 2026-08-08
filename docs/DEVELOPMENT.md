@@ -22,15 +22,28 @@ access. Project instructions are defined in `AGENTS.md`.
 
 ## Build dependency
 
-A local Learn-Monitor backend JAR can be supplied with:
+The build requires a local Learn-Monitor backend JAR. Pass its absolute path
+to Gradle with the `studentDatabaseJar` property:
+
+```bash
+./gradlew build \
+  -PstudentDatabaseJar=/absolute/path/student-database.jar
+```
+
+The same configured JAR is used for the `compileOnly` and `runtimeOnly`
+configurations. Gradle configuration fails with a clear message when the
+property is missing; there is no Maven dependency fallback.
+
+The project build script accepts the path via an environment variable and
+forwards it as the Gradle property:
 
 ```bash
 STUDENT_DATABASE_JAR=/absolute/path/student-database.jar scripts/build-project
 ```
 
-On the current development server, `scripts/build-project` can detect the established
-backend JAR location. It may read that JAR as a compile dependency but must not
-write to the runtime directory.
+On the current development server, `scripts/build-project` can detect the
+established backend JAR location. It may read that JAR as a build dependency
+but must not write to the runtime directory.
 
 ## Routine commands
 

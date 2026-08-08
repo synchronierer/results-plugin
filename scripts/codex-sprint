@@ -172,13 +172,34 @@ echo "============================================================"
 
 git switch -c "$BRANCH"
 
+TOP_HELP="$(codex --help 2>&1 || true)"
+EXEC_HELP="$(codex exec --help 2>&1 || true)"
+CODEX_COMMAND=(codex)
+
+if grep -q -- '--sandbox' <<<"$EXEC_HELP"; then
+    CODEX_COMMAND+=(exec --sandbox workspace-write)
+    if grep -q -- '--ask-for-approval' <<<"$EXEC_HELP"; then
+        CODEX_COMMAND+=(--ask-for-approval never)
+    fi
+else
+    if grep -q -- '--sandbox' <<<"$TOP_HELP"; then
+        CODEX_COMMAND+=(--sandbox workspace-write)
+    fi
+    if grep -q -- '--ask-for-approval' <<<"$TOP_HELP"; then
+        CODEX_COMMAND+=(--ask-for-approval never)
+    fi
+    CODEX_COMMAND+=(exec)
+fi
+
+if grep -q -- '--output-last-message' <<<"$EXEC_HELP"; then
+    CODEX_COMMAND+=(--output-last-message "$LAST_MESSAGE")
+fi
+
+CODEX_COMMAND+=("-")
+
 set +e
 GRADLE_USER_HOME="$ROOT/.gradle/codex-user-home" \
-codex exec \
-    --sandbox workspace-write \
-    --ask-for-approval never \
-    --output-last-message "$LAST_MESSAGE" \
-    - < "$PROMPT_FILE" 2>&1 |
+"${CODEX_COMMAND[@]}" < "$PROMPT_FILE" 2>&1 |
 tee "$CODEX_LOG"
 CODEX_EXIT=${PIPESTATUS[0]}
 set -e

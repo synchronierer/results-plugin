@@ -14,12 +14,19 @@ repositories {
     }
 }
 
+val studentDatabaseJar = providers.gradleProperty("studentDatabaseJar").orNull
+    ?: throw GradleException(
+        "The local backend JAR must be configured with " +
+            "-PstudentDatabaseJar=/absoluter/pfad/student-database.jar"
+    )
+val studentDatabaseJarFiles = files(studentDatabaseJar)
+
 dependencies {
-    compileOnly(files("/home/lo/learn-monitor-arcanum-neu/runtime-original/sandbox/student-database.jar")) // TODO: Use an api only implementation here
+    compileOnly(studentDatabaseJarFiles) // TODO: Use an api only implementation here
     compileOnly("org.slf4j:slf4j-api:2.0.13")
     
     // Only for local debugging:
-    runtimeOnly(files("/home/lo/learn-monitor-arcanum-neu/runtime-original/sandbox/student-database.jar"))
+    runtimeOnly(studentDatabaseJarFiles)
     
     // test framework (optional)
     testImplementation("org.junit.jupiter:junit-jupiter:5.13.4")
