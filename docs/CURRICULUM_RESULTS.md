@@ -79,7 +79,5 @@ Routen und Backenddateien. Ein kleiner DOM-Testadapter prüft Struktur und Texte
 er ersetzt keine Browserprüfung für Layout und Animation.
 
 Die Tests bestanden mit Node 22.14.0, lokal unter `.gradle/sprint-tools/node`
-bereitgestellt (offizieller Download mit SHA-256-Abgleich). Der vollständige
-Gradle-Build bleibt ohne konfigurierte `student-database.jar` blockiert.
-Eine Browserprüfung auf Tablet und Desktop sowie ein synthetischer Integrationstest
-mit den im Sprint genannten Backend-/Permission-Kandidaten stehen aus.
+bereitgestellt (offizieller Download mit SHA-256-Abgleich). Die vollständige Verifikation wurde anschließend mit der Canonical-Backend-JAR durchgeführt. scripts/check, der Gradle-Build, 36 JavaScript-Tests und git diff --check bestanden.
+
