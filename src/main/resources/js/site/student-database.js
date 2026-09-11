@@ -118,7 +118,7 @@ function arcanumResultCreateCoinStacks(tasks, coins) {
     container.className = 'arcanum-coin-stacks';
     container.setAttribute(
         'aria-label',
-        `${coins} von ${RESULT_MAX_COINS} Münzen`
+        `${coins} Münzen; reguläres Ziel: ${RESULT_MAX_COINS} Münzen`
     );
 
     const sources = arcanumResultCoinSources(tasks);
@@ -163,6 +163,8 @@ function arcanumResultCreateCoinStacks(tasks, coins) {
 
                 coin.title =
                     `${taskName} · ${reward} Münzen`;
+            } else if (earned) {
+                coin.title = `Erreichte Münze ${coinNumber}`;
             } else {
                 coin.title =
                     `Münze ${coinNumber} noch nicht erreicht`;
@@ -197,7 +199,7 @@ function arcanumResultCreateLogbook(tasks) {
         return logbook;
     }
 
-    const list = document.createElement('ol');
+    const list = document.createElement(tasks.some(task => task.kind) ? 'ul' : 'ol');
     list.className = 'arcanum-logbook__list';
 
     tasks.forEach(task => {
@@ -222,11 +224,14 @@ function arcanumResultCreateLogbook(tasks) {
 
         const metaParts = [];
 
-        if (task?.topic?.name) {
-            metaParts.push(task.topic.name);
+        if (task.kind === 'flexible') {
+            entry.classList.add('arcanum-log-entry--flexible');
+            metaParts.push('Flexible / zusätzliche Etappe');
+        } else if (task?.topicName || task?.topic?.name) {
+            metaParts.push(task.topicName || task.topic.name);
         }
 
-        if (task?.niveau != null) {
+        if (task.kind !== 'flexible' && task?.niveau != null) {
             metaParts.push(
                 arcanumResultLevelLabel(task.niveau)
             );
@@ -255,16 +260,16 @@ function arcanumResultCreateLogbook(tasks) {
     return logbook;
 }
 
-function createBarChart(subject, subjectName, studentData, settings) {
+function createBarChart(subject, subjectName, studentData, settings, curriculumProgress = null) {
     const chart = document.createElement('article');
     chart.className = 'bar-chart arcanum-result-card';
 
-    const tasks = arcanumResultCompletedTasks(
+    const tasks = curriculumProgress?.tasks ?? arcanumResultCompletedTasks(
         studentData,
         subjectName
     );
 
-    const coins = tasks.reduce(
+    const coins = curriculumProgress?.totalTokens ?? tasks.reduce(
         (sum, task) =>
             sum + Math.max(0, Number(task?.tokens) || 0),
         0
@@ -345,9 +350,15 @@ function createBarChart(subject, subjectName, studentData, settings) {
     const coinHeading = document.createElement('strong');
     coinHeading.className = 'arcanum-result-coins__heading';
     coinHeading.textContent =
-        `${coins} / ${RESULT_MAX_COINS} Münzen`;
+        `${coins} Münzen · Ziel: ${RESULT_MAX_COINS} Münzen`;
 
     coinSection.appendChild(coinHeading);
+    if (coins > RESULT_MAX_COINS) {
+        const extra = document.createElement('p');
+        extra.className = 'arcanum-result-extra';
+        extra.textContent = `+${coins - RESULT_MAX_COINS} Zusatzmünzen`;
+        coinSection.appendChild(extra);
+    }
     coinSection.appendChild(
         arcanumResultCreateCoinStacks(tasks, coins)
     );
@@ -411,7 +422,7 @@ function arcanumResultsSetText(id, value) {
     }
 }
 
-function arcanumResultsPopulateHeader(studentData) {
+function arcanumResultsPopulateHeader(studentData, curriculumTotal = null) {
     const firstName = studentData?.firstName || "";
     const lastName = studentData?.lastName || "";
     const fullName =
@@ -445,7 +456,7 @@ function arcanumResultsPopulateHeader(studentData) {
     }
 
     const completedTasks =
-        arcanumResultsUniqueCompletedTasks(studentData);
+        curriculumTotal === null ? arcanumResultsUniqueCompletedTasks(studentData) : [];
 
     const totalCoins = completedTasks.reduce(
         (sum, task) =>
@@ -453,7 +464,7 @@ function arcanumResultsPopulateHeader(studentData) {
         0
     );
 
-    arcanumResultsSetText("total-coins", totalCoins);
+    arcanumResultsSetText("total-coins", curriculumTotal ?? totalCoins);
 
     const studentId =
         arcanumResultsEntityId(studentData?.id);
@@ -462,8 +473,12 @@ function arcanumResultsPopulateHeader(studentData) {
         const storageKey =
             `arcanum-avatar:student:${studentId}`;
 
-        const avatarPath =
-            window.localStorage.getItem(storageKey);
+        let avatarPath = null;
+        try {
+            avatarPath = window.localStorage.getItem(storageKey);
+        } catch {
+            // The profile initials remain usable when browser storage is disabled.
+        }
 
         if (
             avatarPath &&

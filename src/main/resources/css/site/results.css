@@ -848,3 +848,22 @@ body.arcanum-page .arcanum-treasury-hero {
 }
 
 /* /ARCANUM TREASURY LIVE V4 */
+
+/* Curriculum status and additional earned coins; the regular scale stays 100. */
+.arcanum-result-extra {
+    color: var(--arcanum-results-brown-dark);
+    font-weight: 800;
+}
+
+.arcanum-log-entry--flexible {
+    border-style: dashed;
+}
+
+.arcanum-result-error {
+    padding: 1.2rem;
+    overflow-wrap: anywhere;
+}
+
+.arcanum-result-error h3 {
+    margin-top: 0;
+}

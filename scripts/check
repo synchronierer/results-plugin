@@ -9,6 +9,10 @@ git diff --check
 git diff --cached --check
 
 echo
+echo "===== JavaScript-Tests ====="
+node --test tests/*.test.cjs
+
+echo
 echo "===== Build und Tests ====="
 scripts/build-project
 
