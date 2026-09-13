@@ -19,7 +19,7 @@ function getGrade(coins) {
     if (value >= 40) return 4;
     if (value >= 20) return 5;
 
-    return 0;
+    return 6;
 }
 
 function getGradeLabel(grade) {
@@ -29,7 +29,7 @@ function getGradeLabel(grade) {
         3: "3 (Befriedigend)",
         4: "4 (Ausreichend)",
         5: "5 (Mangelhaft)",
-        0: "Noch keine Note"
+        6: "6 (Ungenügend)"
     }[grade] || "Noch keine Note";
 }
 
