@@ -132,9 +132,9 @@ for (const coins of [0, 100, 101, 102, 103, 104, 105]) {
         assert.equal(byClass(card, 'arcanum-coin-stacks')[0].attributes['aria-label'], `${coins} Münzen; reguläres Ziel: 100 Münzen`);
     });
 }
-test('unchanged grade boundaries', () => {
+test('grade boundaries remain unchanged, including the zero-coin grade', () => {
     const { context: c } = setup();
-    for (const [coins, grade] of [[0,0],[19,0],[20,5],[39,5],[40,4],[59,4],[60,3],[74,3],[75,2],[89,2],[90,1],[100,1],[105,1]]) {
+    for (const [coins, grade] of [[0,6],[19,6],[20,5],[39,5],[40,4],[59,4],[60,3],[74,3],[75,2],[89,2],[90,1],[100,1],[105,1]]) {
         assert.equal(c.getGrade(coins), grade);
     }
 });
