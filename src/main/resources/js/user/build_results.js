@@ -14,8 +14,12 @@ function normalizeCurriculumProgress(progress) {
         }
         const result = { kind, id: task.id, name: task.name, tokens: task.tokens };
         if (kind === 'central') {
+            if (!Number.isInteger(task.stageNumber) || task.stageNumber < 1) {
+                throw new Error('invalid_progress');
+            }
             Object.assign(result, {
-                niveau: task.niveau, topicId: task.topicId, topicName: task.topicName
+                niveau: task.niveau, stageNumber: task.stageNumber,
+                topicId: task.topicId, topicName: task.topicName
             });
         }
         return result;

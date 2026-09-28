@@ -227,8 +227,13 @@ function arcanumResultCreateLogbook(tasks) {
         if (task.kind === 'flexible') {
             entry.classList.add('arcanum-log-entry--flexible');
             metaParts.push('Flexible / zusätzliche Etappe');
-        } else if (task?.topicName || task?.topic?.name) {
-            metaParts.push(task.topicName || task.topic.name);
+        } else {
+            if (task?.stageNumber != null) {
+                metaParts.push(`Etappe ${task.stageNumber}`);
+            }
+            if (task?.topicName || task?.topic?.name) {
+                metaParts.push(task.topicName || task.topic.name);
+            }
         }
 
         if (task.kind !== 'flexible' && task?.niveau != null) {

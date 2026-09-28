@@ -24,7 +24,7 @@ const all = element => [element, ...element.children.flatMap(all)];
 const byClass = (element, name) => all(element).filter(e => e.className.split(' ').includes(name));
 const text = element => all(element).map(e => e.textContent).join(' ');
 const progress = (overrides = {}) => ({ semesterId: 12, totalTokens: 10,
-    completedCentralTasks: [{ id: 17, name: 'Aktueller Name', tokens: 4, niveau: 1,
+    completedCentralTasks: [{ id: 17, name: 'Aktueller Name', tokens: 4, niveau: 1, stageNumber: 2,
         topicId: 20, topicName: 'Aktuelles Thema' }],
     completedFlexibleTasks: [{ id: 17, name: 'Aktueller Name', tokens: 6 }], ...overrides });
 function setup({ subjects = [{ id: 123, name: 'Testfach' }], responses = [], staff = false,
@@ -90,7 +90,7 @@ for (const id of ['Fachname', '123', undefined, NaN]) {
 }
 test('normalization preserves kinds, equal IDs/names, current definitions and zero-token completions', () => {
     const s = setup(); const p = progress();
-    p.completedCentralTasks.push({ id: 18, name: 'Ohne Münzen', tokens: 0, niveau: 2, topicName: 'Thema' });
+    p.completedCentralTasks.push({ id: 18, name: 'Ohne Münzen', tokens: 0, niveau: 2, stageNumber: 3, topicName: 'Thema' });
     const model = s.context.normalizeCurriculumProgress(p);
     assert.equal(model.semesterId, 12); assert.equal(model.tasks.length, 3);
     assert.deepEqual(JSON.parse(JSON.stringify(model.tasks[0])), { kind: 'central', ...p.completedCentralTasks[0] });
@@ -100,6 +100,7 @@ test('normalization preserves kinds, equal IDs/names, current definitions and ze
     assert.equal(byClass(card, 'arcanum-log-entry').length, 3);
     assert.match(text(card), /3 bestandene Etappen/); assert.match(text(card), /Ohne Münzen/);
     assert.match(text(card), /Aktueller Name/); assert.match(text(card), /Aktuelles Thema/);
+    assert.match(text(card), /Etappe 2/);
     assert.match(text(card), /\+0/); assert.match(text(card), /\+4/); assert.match(text(card), /\+6/);
     const flexible = byClass(card, 'arcanum-log-entry--flexible')[0];
     assert.match(text(flexible), /Flexible \/ zusätzliche Etappe/);
