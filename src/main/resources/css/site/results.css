@@ -84,7 +84,7 @@ body {
 #charts {
     display: grid;
     grid-template-columns:
-        repeat(3, minmax(0, 1fr));
+        repeat(4, minmax(0, 1fr));
     gap: 22px;
     align-items: start;
 }
@@ -574,7 +574,7 @@ body {
 #charts {
     display: grid;
     grid-template-columns:
-        repeat(3, minmax(0, 1fr));
+        repeat(4, minmax(0, 1fr));
     gap: 1rem;
     align-items: start;
     width: 100%;
